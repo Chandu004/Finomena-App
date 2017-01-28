@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html ng-app='finomenaApp'>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Finomena App</title>
+    <!-------------Scripts Includes--------------------------------->
+    <!-------------Styles Includes---------------------------------->
+    <link href="styles/reset.css" rel="stylesheet">
+    <link href="styles/bootstrap.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,400i,700" rel="stylesheet"> </head>
+<link href="styles/materialize.css" rel="stylesheet">
+<link href="styles/styles.css" rel="stylesheet">
+
+<body>
+    <div class="logo"> <img src="images/finomena_logo.png"> </div>
+    <div class="container_wrapper">
+        <div class="main_container">
+            <div class="user_name" ng-controller='finomenaController as mainCtrl' ng-hide=mainCtrl.quizcontent.quizActive>
+                <form name="nameForm" novalidate>
+                    <h1>
+                        <label for="name">Please enter your full name</label>
+                    </h1>
+                    <div class="name_input">
+                        <input type='text' name="user_name" ng-model='name' ng-pattern='/^[a-zA-Z\s]*$/' ng-minlength='3' ng-maxlength='15'>
+                        <h5>Only Alphabets</h5>
+                        <p ng-show='nameForm.user_name.$invalid'>Invalid Name(Use only alphabets) with min length=3 and max-length=15</p>
+                    </div>
+                    <button type="submit" ng-disabled='nameForm.user_name.$invalid || nameForm.user_name.$pristine' ng-click='mainCtrl.activateQuiz()'>Submit</button>
+                </form>
+            </div>
+            
+            <div class="quiz" ng-controller='quizController as quizCtrl' ng-show='quizCtrl.quizcontent.quizActive'>
+                <div class="quiz_container" ng-show='quizCtrl.showQuiz'>
+                    <h1>
+                    Finomena Quiz
+                    </h1>
+                    <div class="question">
+                        <h3>
+                        {{quizCtrl.activeQuestion+1+'.'+quizCtrl.dataService.questiondata[quizCtrl.activeQuestion].question}} 
+                    </h3> </div>
+                    <div class="answer">
+                        <div class="options btn waves-effect waves-light" ng-repeat="answer in quizCtrl.dataService.questiondata[quizCtrl.activeQuestion].options" ng-class="{'selectedAnswer': $index === quizCtrl.dataService.questiondata[quizCtrl.activeQuestion].selected}" ng-click='quizCtrl.selectAnswer($index)'> {{answer.answer}} </div>
+                    </div>
+                    <div class="submit_button">
+                        <button ng-click='quizCtrl.questionAnswered()' ng-disabled=quizCtrl.option_not_choosen>{{value}}</button>
+                    </div>
+                </div>
+            </div>
+           
+            <div class="confirmation" ng-controller="confirmController as confirmCtrl" ng-show='confirmCtrl.quizcontent.confirmation'>
+                <h2>Click on the button to show result</h2>
+                <div class="confirm_button">
+                    <button ng-click="confirmCtrl.confirmation()">Show Results</button>
+                </div>
+            </div>
+            
+            <div class="quiz_results" ng-controller='resultsController as resCtrl' ng-show='resCtrl.quizcontent.showResults'>
+                <h1>Results</h1>
+                <h2>You scored {{resCtrl.quizcontent.numCorrect}}/{{resCtrl.dataService.questiondata.length}}</h2>
+                <div>
+                    <zingchart id="myChart" zc-json="myJson" zc-height=4 00 zc-width=6 00></zingchart>
+                </div>
+                <div class="row">
+                    <div ng-repeat='question in resCtrl.dataService.questiondata' ng-init='currentQuestion=$index'>
+                        <h3>{{'Q.'+question.question}}</h3>
+                        <div class="answer">
+                            <div class='results_options' ng-repeat='options in question.options'>
+                                <p>{{options.answer}}</p> <span class='selected_answer' ng-show='$index===resCtrl.dataService.questiondata[currentQuestion].selected'>Selected Answer</span> <span class='correct_answer' ng-show='$index===resCtrl.dataService.correctAnswers[currentQuestion]'>Correct Answer</span> </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="scripts/jquery.min.js" type="text/javascript"></script>
+    <script src="scripts/Chart.js" type="text/javascript"></script>
+    <script src="scripts/angular.min.js"></script>
+    <script src="scripts/zingchart.min.js"></script>
+    <script src="scripts/zingchart-angularjs.js"></script>
+    <script src="scripts/bootstrap.min.js" type="text/javascript"></script>
+    <script src="scripts/angular.min.js" type="text/javascript"></script>
+    <script src="scripts/controllers/scripts.js" type="text/javascript"></script>
+    <script src="scripts/controllers/quiz.js" type="text/javascript"></script>
+    <script src="scripts/controllers/resultsController.js" type="text/javascript"></script>
+    <script src="scripts/controllers/confirmController.js" type="text/javascript"></script>
+    <script src="scripts/factories/quizcontentfactory.js" type="text/javascript"></script>
+    <script src="scripts/factories/dataService.js" type="text/javascript"></script>
+</body>
+
+</html>

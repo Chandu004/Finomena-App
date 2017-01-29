@@ -8,6 +8,7 @@ var confirmController = finomenaApp.controller('confirmController', function (qu
         
         //this.finalCount=quizcontent.numCorrect;
         
+        alert(this.quizcontent.numCorrect);
         this.quizcontent.confirmation=false;
         
         this.quizcontent.showResults=true;

@@ -109,6 +109,7 @@ button:disabled{
 
 .selectedAnswer{
    color: #000;
+   background-color:#4CD964;      
 }
 
 .quiz h1{
